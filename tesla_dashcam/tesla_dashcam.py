@@ -1463,6 +1463,7 @@ def create_intermediate_movie(
     _LOGGER.debug(f"FFMPEG Command: {ffmpeg_command}")
     # Run the command.
     try:
+        print("FFMPEG Command:{}".format(ffmpeg_command))
         run(ffmpeg_command, capture_output=True, check=True)
     except CalledProcessError as exc:
         print(
@@ -2957,7 +2958,7 @@ def main() -> None:
             ffmpeg_timestamp + f"drawtext=fontfile={layout_settings.font.font}:"
             f"fontcolor={layout_settings.font.color}:fontsize={layout_settings.font.size}:"
             "borderw=2:bordercolor=black@1.0:"
-            f"x={layout_settings.font.halign}:y={layout_settings.font.valign}:"
+            # f"x={layout_settings.font.halign}:y={layout_settings.font.valign}:"
             "text='%{{pts\:localtime\:{epoch_time}\:%x %X}}'"
         )
 
