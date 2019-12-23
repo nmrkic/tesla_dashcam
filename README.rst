@@ -46,7 +46,7 @@ Option --chapter_offset can be provided to offset the chapter markers within the
 result in the chapter marker being set not at the start for the folder video but instead be set provided number of
 seconds before the end of that video. For example, with 10 minute video for a folder a value of -120 would result
 in the chapter markers being set 2 minutes before the end of that video. A positive number will result in chapter marker
-being set to provided number of seconds after the start of the video. Value of 300 would result in chapter markers being
+being set to provided number of seconds after the start of the video. Value of 600 would result in chapter markers being
 set 5 minutes into that folder's video.
 
 If --merge is not provided as an option and there are multiple sub-folders then the filename (if provided in output)
@@ -65,10 +65,10 @@ start processing all the folders within the SavedClips folder. Once processing o
 Binaries
 --------
 
-Stand-alone binaries can be retrieved from:
+Stand-alone binaries can be retrieved:
 
-- Windows: https://github.com/ehendrix23/tesla_dashcam/releases/latest/download/tesla_dashcam.zip
-- MacOS (OSX): https://github.com/ehendrix23/tesla_dashcam/releases/latest/download/tesla_dashcam.dmg
+- Windows: https://github.com/ehendrix23/tesla_dashcam/releases/download/v0.1.14/tesla_dashcam.zip
+- MacOS (OSX): https://github.com/ehendrix23/tesla_dashcam/releases/download/v0.1.14/tesla_dashcam.dmg
 
 `ffmpeg <https://www.ffmpeg.org/legal.html>`_ is included within the respective package.
 ffmpeg is a separately licensed product under the `GNU Lesser General Public License (LGPL) version 2.1 or later <http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html>`_.
@@ -83,7 +83,7 @@ MacOS binary of ffmpeg was downloaded from: https://evermeet.cx/ffmpeg/
 Notes
 -----
 
-The video files for the same minute between the 4 cameras are not always the same length. If there is a difference in
+The video files for the same minute between the 3 cameras are not always the same length. If there is a difference in
 their duration then a black screen will be shown for the camera which video ended before the others (within the minute).
 It is thus possible within a video to see a black screen for one of the cameras, and then when that minute has passed
 for it to show video again.
@@ -876,36 +876,21 @@ Release Notes
     - Fixed: Missing python-dateutil package when installing from PIP `Issue #77 <https://github.com/ehendrix23/tesla_dashcam/issues/77>`_
     - Fixed: Missing fonts in Docker Image (thanks to moorecp for providing fix)
     - Fixed: Only the 1st source was processed When using MONITOR or MONITOR_ONCE, or with V10 only SavedClips was processed when not providing a source
-0.1.16:
-    - New: Options --front_scale, --rear_scale, --left_scale, and --right_scale to set the scale of each clip individually (value of 1 is 1280x960 for the clip)
-    - New: Option --swap_frontrear to swap front&rear cameras in output.
-    - New: Option --background to specify background color (default is black).
-    - New: Option --fps to set the frame rate for resulting video. Default is set to 24 (Tesla records at about 33 fps). `Issue #85 <https://github.com/ehendrix23/tesla_dashcam/issues/85>`_
-    - New: Parameter file (provided using @) can now include comments (specify using #)
-    - New: Option --loglevel to allow for debug information to be printed.
-    - Changed: --speedup and --slowdown now accepts a float allowing for example to speed video up by 1.5
-    - Changed: Option scale (and clip scale options) also accept fixed resolution (i.e. 640x480) for the clip.
-    - Changed: View of rear camera will be mirrored as well if side cameras are shown as mirror
-    - Changed: For all layouts default is to show mirror for rear&side if front camera is shown, otherwise show as rear viewing.
-    - Changed: Swap left&right cameras when showing rear&side as rear viewing, and not to swap them when showing rear&side as mirror view.
-    - Changed: Re-organized help (-h) for all parameters by grouping them.
-    - Changed: Added message to install fonts using apt-get install ttf-freefont on Linux if font file is not found.
-    - Fixed: Providing paths with spaces did not work in parameter files even although it worked from command line. `Issue #89 <https://github.com/ehendrix23/tesla_dashcam/issues/89>`_
-    - Fixed: Changed Arial font on MacOS to Arial Unicode (from Arial) as it seems Arial is not available anymore on MacOS 10.15 (Catalina). `Issue #64 <https://github.com/ehendrix23/tesla_dashcam/issues/64>`_
 
 TODO
 ----
 
-* Implement option to crop individual camera output
-* Option for end-user layout
 * Monitor path for new folders/files as trigger option
 * Provide option to copy or move from source to output folder before starting to process
+* Implement option to crop individual camera output
 * Develop method to run as a service with --monitor option
 * GUI Front-end
 * Support drag&drop of video folder (supported in Windows now, MacOS not yet)
 * Add object detection (i.e. people) and possible output when object was detected
 * Saving of options
-* Use timestamp in video to ensure full synchronization between the 4 cameras
+* Option to specify resolutions as an argument
+* Option for end-user layout
+* Use timestamp in video to ensure full synchronization between the 3 cameras
 * Add option for source/output to be S3 bucket (with temp folder for creating temporary files)
 * Develop Web Front-End
 * Develop method to have run in AWS, allowing user to upload video files and interact using Web Front-End
