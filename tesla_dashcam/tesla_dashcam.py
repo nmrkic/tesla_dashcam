@@ -566,6 +566,134 @@ class WideScreen(FullScreen):
         )
 
 
+class Single(FullScreen):
+
+    """ Single Movie Layout
+        [CAMERA]
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.scale = 1
+
+    @property
+    def video_width(self):
+        return 1280
+
+    @property
+    def video_height(self):
+        return 960 
+
+    def _front_xpos(self):
+        return 0
+
+    def _left_xpos(self):
+        return 0
+
+    def _left_ypos(self):
+        return 0
+
+    def _right_xpos(self):
+        return 0
+
+    def _right_ypos(self):
+        return 0
+
+    def _rear_xpos(self):
+        return 0
+
+    def _rear_ypos(self):
+        return 0
+
+
+
+class Compact(FullScreen):
+
+    """ Compact Movie Layout
+        [FRONT_CAMERA][REAR_CAMERA]
+        [LEFT_CAMERA][RIGHT_CAMERA]
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.scale = 1 / 2
+
+    @property
+    def video_width(self):
+        return max(
+            self.cameras("Front").width + self.cameras("Rear").width,
+            self.cameras("Left").width + self.cameras("Right").width,
+        )
+
+    @property
+    def video_height(self):
+        height = int(
+            max(
+                self.cameras("Left").height + self.cameras("Front").width,
+                self.cameras("Right").height + self.cameras("Rear").width
+        ))
+        return int(height)
+
+    def _front_xpos(self):
+        return (
+            int(max(0, self.center_xpos - (self.cameras("Front").width)))
+            * self.cameras("Front").include
+        ) 
+
+    def _left_xpos(self):
+        return (
+            max(
+                0,
+                self.center_xpos
+                - int((self.cameras("Left").width + self.cameras("Right").width) / 2),
+            )
+            * self.cameras("Left").include
+        )
+
+    def _left_ypos(self):
+        return (
+            self.cameras("Front").height
+            + int(
+                (
+                    max(self.cameras("Left").height, self.cameras("Right").height)
+                    - self.cameras("Left").height
+                )
+                / 2
+            )
+        ) * self.cameras("Left").include
+
+    def _right_xpos(self):
+        return (
+            max(
+                0,
+                self.center_xpos
+                - int((self.cameras("Left").width + self.cameras("Right").width) / 2)
+                + self.cameras("Left").width,
+            )
+            * self.cameras("Right").include
+        )
+
+    def _right_ypos(self):
+        return (
+            self.cameras("Front").height
+            + int(
+                (
+                    max(self.cameras("Left").height, self.cameras("Right").height)
+                    - self.cameras("Right").height
+                )
+                / 2
+            )
+        ) * self.cameras("Right").include
+
+    def _rear_xpos(self):
+        return (
+            int(max(0, self.center_xpos)) 
+            * self.cameras("Rear").include
+        )
+
+    def _rear_ypos(self):
+        return int(0)
+
 class Cross(FullScreen):
     """ Cross Movie Layout
 
@@ -1248,7 +1376,7 @@ def create_intermediate_movie(
         )
         return None, 0, True
 
-    if video_settings["video_layout"].swap_left_right:
+    if video_settings["video_layout"].swap_left_right and video_settings["video_layout"].cameras("Right").include and video_settings["video_layout"].cameras("Left").include:
         left_camera, right_camera = right_camera, left_camera
 
     if video_settings["video_layout"].swap_front_rear:
@@ -2243,7 +2371,7 @@ def main() -> None:
     layout_group.add_argument(
         "--layout",
         required=False,
-        choices=["WIDESCREEN", "FULLSCREEN", "PERSPECTIVE", "CROSS", "DIAMOND"],
+        choices=["WIDESCREEN", "FULLSCREEN", "PERSPECTIVE", "COMPACT", "CROSS", "DIAMOND", "SINGLE"],
         default="FULLSCREEN",
         help="R|Layout of the created video.\n"
         "    FULLSCREEN: Front camera center top, "
@@ -2753,6 +2881,10 @@ def main() -> None:
             layout_settings = Cross()
         elif args.layout == "DIAMOND":
             layout_settings = Diamond()
+        elif args.layout == "COMPACT":
+            layout_settings = Compact()
+        elif args.layout == "SINGLE":
+            layout_settings = Single()
         else:
             layout_settings = FullScreen()
 
