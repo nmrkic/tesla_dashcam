@@ -578,11 +578,11 @@ class Single(FullScreen):
 
     @property
     def video_width(self):
-        return 1280
+        return 640
 
     @property
     def video_height(self):
-        return 960 
+        return 480
 
     def _front_xpos(self):
         return 0
@@ -629,8 +629,8 @@ class Compact(FullScreen):
     def video_height(self):
         height = int(
             max(
-                self.cameras("Left").height + self.cameras("Front").width,
-                self.cameras("Right").height + self.cameras("Rear").width
+                self.cameras("Left").height + self.cameras("Front").height,
+                self.cameras("Right").height + self.cameras("Rear").height
         ))
         return int(height)
 
