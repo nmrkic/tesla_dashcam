@@ -193,8 +193,8 @@ class Camera(object):
         self._layout = layout
         self._camera = camera
         self._include = True
-        self._width = 1280
-        self._height = 960
+        self._width = 640 
+        self._height = 480
         self._xpos = 0
         self._ypos = 0
         self._scale = 0
@@ -585,6 +585,9 @@ class Single(FullScreen):
         return 480
 
     def _front_xpos(self):
+        return 0
+
+    def _fromt_ypos(self):
         return 0
 
     def _left_xpos(self):
